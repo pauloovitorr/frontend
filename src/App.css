@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  
 }
 
 .App-logo {
@@ -35,4 +36,127 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+.div_professor{
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.dados_form > form{
+  width: 70%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: white;
+
+}
+
+.dados_form > form >  div{
+  width: 40%;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+    
+}
+
+.dados_form > form > div > label{
+  width: 80%;
+  text-align: left;
+}
+
+
+
+.dados_form > form > div > div > button{
+  width: 60%;
+  margin: 0 auto;
+  background-color: rgb(0, 119, 255);
+  color: white;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: .5s;
+}
+
+.dados_form > form > div > div > button:hover{
+  background-color: rgb(8, 72, 146);
+}
+
+.dados_form > form > div > input,
+.dados_form > form > div > select{
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+.tabela{
+  width: 70%;
+  margin: 0 auto;
+  background-color: white;
+  margin-top: 50px;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.tabela > table{
+  width: 90%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  padding: 10px;
+}
+
+.tabela > table > thead >tr,
+.tabela > table > tbody >tr{
+  border-bottom: 1px solid rgba(128, 128, 128, 0.527);
+}
+
+.tabela > table > thead >tr > th{
+  width: 25%;
+  padding: 6px;
+}
+
+.tabela > table > tbody >tr > td{
+  padding: 6px;
+}
+
+
+.edit{
+  font-size: 1.1rem;
+}
+.edit:hover{
+  color: #1bc9e0;
+  cursor: pointer;
+  transition: .5s;
+  
+}
+.del{
+  font-size: 1.1rem;
+}
+
+.del:hover{
+  color: #e9290f;
+  cursor: pointer;
+  transition: .5s;
+}
+
+.btns{
+  width: 100%;
+  display: flex;
+  flex-direction: row !important;
+  justify-content: space-between;
+}
+
+.btns :nth-child(2) button{
+  background-color: #00f314;
+}
+
+.btns > div{
+  width: 50%;
 }
