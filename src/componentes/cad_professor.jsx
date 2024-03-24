@@ -14,7 +14,6 @@ export default function Professor(){
     const preparaPost = (chave,valor)=>{
         let corpo = {...dados, [chave]:valor}
         setDados(corpo)
-        console.log(dados)
     }
 
     // cadastra professor
@@ -27,6 +26,21 @@ export default function Professor(){
 
         alert(msg)
     }
+
+   async function delprofessor(cod){
+
+    let obj_codigo = {
+        codigo:cod
+    }
+
+
+    if(prompt('Deseja excluir Professor')){
+        let api = new Requisicoes()
+        let msg = await api.deleteProfessor(obj_codigo)
+        alert(msg)
+    }
+
+   }
 
      
     async function carregaProfessor(){
@@ -41,6 +55,35 @@ export default function Professor(){
     carregaProfessor()
    })
 
+   function preparaEdit(cod,nome,email,telefone){
+   
+     document.querySelector('#codProfessor').value = cod
+     document.querySelector('#nome').value = nome
+     document.querySelector('#email').value = email
+     document.querySelector('#telefone').value = telefone
+     document.querySelector('#edit').disabled = false
+   }
+
+   async function editprofessor(){
+   let cod =  document.querySelector('#codProfessor').value 
+   let nome =  document.querySelector('#nome').value 
+   let email =  document.querySelector('#email').value
+   let telefone =  document.querySelector('#telefone').value
+
+
+     let obj_editProfe = {
+        codigo: cod,
+        nome: nome,
+        email: email,
+        telefone: telefone
+     }
+
+     let api = new Requisicoes()
+     let msg = await api.atualizarProfessor(obj_editProfe)
+
+     alert(msg)
+
+   }
   
     return(
         <div className="div_professor">
@@ -52,23 +95,32 @@ export default function Professor(){
 
                 <form method="post" onSubmit={(e)=> { enviar(e) }} > 
                     <div>
-                        <label htmlFor="">Nome:</label>
-                        <input type="text" placeholder="Renato" onChange={(e)=> {preparaPost('nome',e.target.value)}} required />
+                        <label htmlFor="nome">Nome:</label>
+                        <input type="text" id='nome' placeholder="Renato" onChange={(e)=> {preparaPost('nome',e.target.value)}} required />
                     </div>
 
                     <div>
-                        <label htmlFor="">E-mail:</label>
-                        <input type="email" placeholder="renato@gmail.com" onChange={(e)=> {preparaPost('email',e.target.value)}} required/>
+                        <label htmlFor="email">E-mail:</label>
+                        <input type="email" id='email' placeholder="renato@gmail.com" onChange={(e)=> {preparaPost('email',e.target.value)}} required/>
                     </div>
 
                     <div>
-                        <label htmlFor="">Telefone:</label>
-                        <input type="tel" placeholder="(99)99999-9999" onChange={(e)=> {preparaPost('telefone',e.target.value)}} required/>
+                        <label htmlFor="telefone">Telefone:</label>
+                        <input type="tel" id='telefone' placeholder="(99)99999-9999" onChange={(e)=> {preparaPost('telefone',e.target.value)}} required/>
                     </div>
 
-                    <div>
-                        <button  type="submit">Cadastrar</button>
-                    </div>
+                    <div className="btns">
+                        <div>
+                            <button id="cadastrar"  type="submit">Cadastrar</button>
+                        </div>
+
+                        <input type="hidden" id="codProfessor" />
+
+                        <div>
+                            <p id="edit" onClick={()=> editprofessor() } disabled={true}>Editar</p>
+                        </div>
+                   </div>
+
                 </form>
 
             </div>
@@ -91,8 +143,8 @@ export default function Professor(){
                         <td>{disciplina.nome}</td>
                         <td>{disciplina.email}</td>
                         <td>{disciplina.telefone}</td>
-                        <td><i class="fa-regular fa-pen-to-square edit"></i></td>
-                        <td><i class="fa-solid fa-circle-xmark del"></i></td>
+                        <td><i class="fa-regular fa-pen-to-square edit" onClick={()=> preparaEdit(disciplina.codigo,disciplina.nome,disciplina.email,disciplina.telefone ) }></i></td>
+                        <td><i class="fa-solid fa-circle-xmark del" onClick={()=> {delprofessor(disciplina.codigo)}}></i></td>
                         </tr>
                     ))
                     }

@@ -47,22 +47,34 @@ async function carregaProfessor(){
     let {listaa} =  listaProfessor
 
     setProfessores( listaa )
-
-    //carregaDisciplina()
 }
 
-async function delprofessor(codigo){
+async function delDisciplina(codigo){
 
     if(prompt('Deseja realmente excluir a disciplina ?')){
         let cod = {
             codigo: codigo
         }
         let exluir = await api.deleteDisciplina(cod)
-
-        console.log(exluir)
+        if(exluir){
+            alert('Disciplina excluida com sucesso')
+        }
+        
     }
 
     carregaDisciplina()
+}
+
+function editprofessor(cod,nome,ini,ter, cod_professor ,nomeProf){
+     
+    document.querySelector('#cod_professor').value = cod_professor
+    document.querySelector('#cod_disciplina').value = cod
+    document.querySelector('#nomeDis').value = nome
+    document.getElementById('profe').value = nomeProf    
+    document.querySelector('#inicio').value = ini
+    document.querySelector('#termino').value = ter
+    document.querySelector('#edit').disabled = false
+    document.querySelector('#cadastrar').disabled = true
 }
 
 
@@ -81,6 +93,24 @@ async function carregaDisciplina(){
 
 }
 
+ async function editarDisciplina(){
+    let codigo_professor      = document.querySelector('#cod_professor').value
+    let codigo      = document.querySelector('#cod_disciplina').value
+    let nome_dis    = document.querySelector('#nomeDis').value
+    let inicio      = document.querySelector('#inicio').value 
+    let termino     = document.querySelector('#termino').value 
+
+    let obj_atualizar = {
+        codigo: codigo,
+        nome_disciplina: nome_dis,
+        inicio: inicio,
+        termino: termino,
+        codigo_professor: codigo_professor
+    }
+
+    let atualizar = await api.atualizaDisciplina(obj_atualizar)
+}
+
 
     return(
         <div className="div_professor">
@@ -92,13 +122,13 @@ async function carregaDisciplina(){
 
                 <form method="post" onSubmit={(e)=> preparaPost(e)}> 
                     <div>
-                        <label htmlFor="">Nome da disciplina:</label>
-                        <input type="text" placeholder="Programação fullstack 2" onChange= {(e)=> setnome_disciplina(e.target.value)}  required />
+                        <label htmlFor="nomeDis">Nome da disciplina:</label>
+                        <input type="text" id="nomeDis" placeholder="Programação fullstack 2" onChange= {(e)=> setnome_disciplina(e.target.value)}  required />
                     </div>
 
                     <div>
-                        <label htmlFor="">Professor responsável:</label>
-                        <select name="" id=""  onClick={carregaProfessor} onChange= {(e)=> setCod_professor(e.target.value)} >
+                        <label htmlFor="profe">Professor responsável:</label>
+                        <select name="" id="profe" required onClick={carregaProfessor} onChange= {(e)=> setCod_professor(e.target.value)} >
                             <option value="">Selecione</option>
                             {
                                 professores.map((item)=>(
@@ -110,24 +140,25 @@ async function carregaDisciplina(){
                     </div>
 
                     <div>
-                        <label htmlFor="">Inicio das aulas:</label>
-                        <input type="text" placeholder="15/02/2024"  onChange= {(e)=> setinicio(e.target.value)} required/>
+                        <label htmlFor="inicio">Inicio das aulas:</label>
+                        <input type="text" id="inicio" placeholder="15/02/2024"  onChange= {(e)=> setinicio(e.target.value)} required/>
                     </div>
 
                     <div>
-                        <label htmlFor="">Término das aulas:</label>
-                        <input type="text" placeholder="15/06/2024"  onChange= {(e)=> settermino(e.target.value)} required/>
+                        <label htmlFor="termino">Término das aulas:</label>
+                        <input type="text" id="termino" placeholder="15/06/2024"  onChange= {(e)=> settermino(e.target.value)} required/>
                     </div>
 
-                 
+                 <input type="hidden" id="cod_disciplina" />
+                 <input type="hidden" id="cod_professor" />
 
                    <div className="btns">
                         <div>
-                            <button  type="submit">Cadastrar</button>
+                            <button id="cadastrar"  type="submit">Cadastrar</button>
                         </div>
 
                         <div>
-                            <button  type="submit">Editar</button>
+                            <p id="edit" onClick={()=> editarDisciplina() } disabled={true}>Editar</p>
                         </div>
                    </div>
 
@@ -163,8 +194,8 @@ async function carregaDisciplina(){
                         <td scope="col">{disciplina.professor.nome}</td>
                         <td scope="col">{disciplina.professor.email}</td>
                         <td scope="col">{disciplina.professor.telefone}</td>
-                        <td><i class="fa-regular fa-pen-to-square edit" ></i></td>
-                        <td><i class="fa-solid fa-circle-xmark del" onClick={()=> {delprofessor(disciplina.codigo)}}></i></td>
+                        <td><i class="fa-regular fa-pen-to-square edit" onClick={()=> {editprofessor(disciplina.codigo, disciplina.nome_disciplina,disciplina.inicio,disciplina.termino,disciplina.professor.codigo,disciplina.professor.nome)}} ></i></td>
+                        <td><i class="fa-solid fa-circle-xmark del" onClick={()=> {delDisciplina(disciplina.codigo)}}></i></td>
                     </tr>
                     ))
                     }

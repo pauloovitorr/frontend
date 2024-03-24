@@ -56,6 +56,61 @@ export default class Requisicoes{
   
     }
 
+    async  atualizarProfessor(dados) {
+        
+    try{
+        let apiDisciplina = 'http://localhost:4000/professor'
+  
+        let resposta = await fetch(`${apiDisciplina}`, {
+            method: 'PUT',
+            headers:{
+                'Content-type': 'Application/json'
+            },
+            body: JSON.stringify(dados)
+        })
+  
+        if(!resposta.ok){
+            throw new Error('Resposta da rede não está ok');
+        }
+        else{
+            return 'Professor atualizado com sucesso !'
+        }
+        
+    }
+    catch(erro){
+        return "Erro o cadastrar professor: "  + erro
+    }
+
+}
+
+async deleteProfessor(codigo){
+
+    console.log(codigo)
+    try{
+        let apiProfessor = 'http://localhost:4000/professor'
+
+        let resposta = await fetch(`${apiProfessor}`, {
+        method: 'DELETE',
+        headers:{
+            'Content-type': 'Application/json'
+        },
+        body: JSON.stringify(codigo)
+        
+        })
+
+        if(!resposta.ok){
+            throw new Error('Resposta da rede não está ok');
+        }
+        else{
+            return 'Professor excluido com sucesso'
+        }
+    }
+        catch(erro){
+            return "Erro ao excluir professor: "  + erro
+        }
+    
+}
+
 
     //Disciplina
 
@@ -137,6 +192,33 @@ async deleteDisciplina(codigo){
             return "Erro ao excluir disciplina: "  + erro
         }
     
+}
+
+async atualizaDisciplina(dados) {
+
+    try{
+      let apiDisciplina = 'http://localhost:4000/disciplina'
+
+      let resposta = await fetch(`${apiDisciplina}`, {
+          method: 'PUT',
+          headers:{
+              'Content-type': 'Application/json'
+          },
+          body: JSON.stringify(dados)
+      })
+
+      if(!resposta.ok){
+          throw new Error('Resposta da rede não está ok');
+      }
+      else{
+          return 'Disciplina cadastrada com sucesso !'
+      }
+      
+  }
+  catch(erro){
+      return "Erro o cadastrar professor: "  + erro
+  }
+
 }
 
 

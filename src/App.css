@@ -130,11 +130,17 @@
 .edit{
   font-size: 1.1rem;
 }
+
 .edit:hover{
   color: #1bc9e0;
   cursor: pointer;
   transition: .5s;
   
+}
+
+#edit{
+ cursor: pointer;
+ font-weight: 500;
 }
 .del{
   font-size: 1.1rem;
