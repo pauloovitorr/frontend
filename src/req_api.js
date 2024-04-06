@@ -222,4 +222,32 @@ async atualizaDisciplina(dados) {
 }
 
 
+// Aluno 
+async cadastrarAluno(dados) {
+
+    try{
+      let apiDisciplina = 'http://localhost:4000/aluno'
+
+      let resposta = await fetch(`${apiDisciplina}`, {
+          method: 'POST',
+          headers:{
+              'Content-type': 'Application/json'
+          },
+          body: JSON.stringify(dados)
+      })
+
+      if(!resposta.ok){
+          throw new Error('Resposta da rede não está ok');
+      }
+      else{
+          return 'Aluno cadastrado com sucesso !'
+      }
+      
+  }
+  catch(erro){
+      return "Erro o cadastrar aluno: "  + erro
+  }
+
+}
+
 }

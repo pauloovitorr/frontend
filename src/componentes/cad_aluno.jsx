@@ -1,18 +1,20 @@
 import Requisicoes from "../req_api.js"
 import { useState, useEffect } from "react"
 
-export default function Professor(){
+export default function Aluno(){
     
-    const[buscar, setBuscar] = useState([])
     const[dados, setDados] = useState({
         nome: '',
-        email: '',
+        cpf: '',
         telefone: '',
     })
 
     // prepara o objeto para enviar
     const preparaPost = (chave,valor)=>{
         let corpo = {...dados, [chave]:valor}
+
+        console.log(corpo)
+
         setDados(corpo)
     }
 
@@ -20,77 +22,18 @@ export default function Professor(){
     async function enviar(e){
         e.preventDefault()
         let api = new Requisicoes()
-        let msg =  await api.cadastrarProfessor(dados)
-
-        carregaProfessor()
+        let msg =  await api.cadastrarAluno(dados)
 
         alert(msg)
     }
 
-   async function delprofessor(cod){
-
-    let obj_codigo = {
-        codigo:cod
-    }
-
-
-    if(prompt('Deseja excluir Professor')){
-        let api = new Requisicoes()
-        let msg = await api.deleteProfessor(obj_codigo)
-        alert(msg)
-    }
-
-   }
-
-     
-    async function carregaProfessor(){
-        let api = new Requisicoes()
-        let listaProfessor = await api.buscarProfessor('')
-        let {listaa} =  listaProfessor
-
-        setBuscar( listaa )
-    }
-
-   useEffect(()=>{
-    carregaProfessor()
-   })
-
-   function preparaEdit(cod,nome,email,telefone){
    
-     document.querySelector('#codProfessor').value = cod
-     document.querySelector('#nome').value = nome
-     document.querySelector('#email').value = email
-     document.querySelector('#telefone').value = telefone
-     document.querySelector('#edit').disabled = false
-   }
-
-   async function editprofessor(){
-   let cod =  document.querySelector('#codProfessor').value 
-   let nome =  document.querySelector('#nome').value 
-   let email =  document.querySelector('#email').value
-   let telefone =  document.querySelector('#telefone').value
-
-
-     let obj_editProfe = {
-        codigo: cod,
-        nome: nome,
-        email: email,
-        telefone: telefone
-     }
-
-     let api = new Requisicoes()
-     let msg = await api.atualizarProfessor(obj_editProfe)
-
-     alert(msg)
-
-   }
-  
-    return(
+      return(
         <div className="div_professor">
-            <h1>Cadastro de professor</h1>
+            <h1>Cadastro de alunos</h1>
 
-            <a href="/">Cadastrar Aluno</a> <br />
             <a href="/disciplina">Cadastrar disciplina</a> <br />
+            <a href="/professor">Cadastrar Professor</a> <br />
 
             <div className="dados_form">
 
@@ -101,8 +44,8 @@ export default function Professor(){
                     </div>
 
                     <div>
-                        <label htmlFor="email">E-mail:</label>
-                        <input type="email" id='email' placeholder="renato@gmail.com" onChange={(e)=> {preparaPost('email',e.target.value)}} required/>
+                        <label htmlFor="cpf">CPF:</label>
+                        <input type="cpf" id='cpf' placeholder="renato@gmail.com" onChange={(e)=> {preparaPost('cpf',e.target.value)}} required/>
                     </div>
 
                     <div>
@@ -113,12 +56,6 @@ export default function Professor(){
                     <div className="btns">
                         <div>
                             <button id="cadastrar"  type="submit">Cadastrar</button>
-                        </div>
-
-                        <input type="hidden" id="codProfessor" />
-
-                        <div>
-                            <p id="edit" onClick={()=> editprofessor() } disabled={true}>Editar</p>
                         </div>
                    </div>
 
@@ -144,8 +81,7 @@ export default function Professor(){
                         <td>{disciplina.nome}</td>
                         <td>{disciplina.email}</td>
                         <td>{disciplina.telefone}</td>
-                        <td><i class="fa-regular fa-pen-to-square edit" onClick={()=> preparaEdit(disciplina.codigo,disciplina.nome,disciplina.email,disciplina.telefone ) }></i></td>
-                        <td><i class="fa-solid fa-circle-xmark del" onClick={()=> {delprofessor(disciplina.codigo)}}></i></td>
+                       
                         </tr>
                     ))
                     }

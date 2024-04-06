@@ -116,7 +116,8 @@ async function carregaDisciplina(){
         <div className="div_professor">
             <h1>Cadastro de disciplina</h1>
 
-            <a href="/professor">Cadastrar Professor</a>
+            <a href="/">Cadastrar Aluno</a> <br />
+            <a href="/professor">Cadastrar Professor</a> <br />
 
             <div className="dados_form">
 
