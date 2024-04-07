@@ -1,7 +1,11 @@
+
 import Requisicoes from "../req_api.js"
 import { useState, useEffect } from "react"
 
 export default function Aluno(){
+
+    const[Alunos,setAlunos] = useState([])
+    const[disciplinas,setDisciplinas] = useState([])
     
     const[dados, setDados] = useState({
         nome: '',
@@ -18,11 +22,67 @@ export default function Aluno(){
         setDados(corpo)
     }
 
+    async function buscarAluno(dados){
+        let api = new Requisicoes()
+
+        if(dados === undefined){
+            dados = ''
+        }
+
+        let buscarAluno = await api.buscarAluno(dados)
+
+        setAlunos(buscarAluno.listaa)
+    }
+
+
+    async function buscarDisciplina(dados){
+        let api = new Requisicoes()
+
+        if(dados === undefined){
+            dados = ''
+        }
+
+        let buscarDisciplina = await api.buscarDisciplina(dados)
+
+        setDisciplinas(buscarDisciplina.listaa)
+    }
+
+
+    useEffect(()=>{
+        buscarAluno()
+        buscarDisciplina()
+       
+    })
+
+
+    function matricula(cod,nome){
+        document.getElementById('nome_aluno_matricula').value = nome
+        document.getElementById('codigo_aluno_matricula').value = cod
+    }
+
+    function enviar_matricula(e){
+        e.preventDefault()
+
+        let codigoAluno =  document.getElementById('codigo_aluno_matricula').value
+        let codigodisciplina =  document.getElementById('disci').value
+
+        let vincular = {
+            codigo_aluno: codigoAluno,
+            lista_disciplina: codigodisciplina
+        }
+
+        console.log(vincular)
+
+
+    }
+
+
     // cadastra professor
     async function enviar(e){
         e.preventDefault()
         let api = new Requisicoes()
-        let msg =  await api.cadastrarAluno(dados)
+
+       let msg =  await api.cadastrarAluno(dados)
 
         alert(msg)
     }
@@ -45,7 +105,7 @@ export default function Aluno(){
 
                     <div>
                         <label htmlFor="cpf">CPF:</label>
-                        <input type="cpf" id='cpf' placeholder="renato@gmail.com" onChange={(e)=> {preparaPost('cpf',e.target.value)}} required/>
+                        <input type="cpf" id='cpf' placeholder="999.999.999-99" onChange={(e)=> {preparaPost('cpf',e.target.value)}} required/>
                     </div>
 
                     <div>
@@ -64,31 +124,83 @@ export default function Aluno(){
             </div>
 
             <div className="tabela">
+
+                <h2>Lista de alunos</h2>
                 <table class="table" id="tabela">
                 <thead>
                     <tr>
                     <th scope="col">Código</th>
                     <th scope="col">Nome</th>
-                    <th scope="col">Email</th>
+                    <th scope="col">CPF</th>
                     <th scope="col">Telefone</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {
-                    buscar.map((disciplina) => (
+
+                {
+                    Alunos.map((aluno)=>(
                         <tr>
-                        <td>{disciplina.codigo}</td>
-                        <td>{disciplina.nome}</td>
-                        <td>{disciplina.email}</td>
-                        <td>{disciplina.telefone}</td>
-                       
+                            <td>{aluno.codigo}</td>
+                            <td>{aluno.nome}</td>
+                            <td>{aluno.cpf}</td>
+                            <td>{aluno.telefone}</td>
+                            <td style={{ cursor: 'pointer' }} onClick={() => { matricula(aluno.codigo, aluno.nome) }}><i className="fa-solid fa-user"></i></td>
+                            <td style={{ cursor: 'pointer' }} onClick={() => { matricula(aluno.codigo,aluno.nome ) }}>Matricular</td>
+
+                            
                         </tr>
                     ))
-                    }
+                }
+            
+                   
                 </tbody>
                 </table>
       </div>
 
+
+
+
+    <div className="tabela">
+
+        <h2>Matricular aluno em suas disciplinas</h2>
+
+        <div className="dados_form">
+
+<form method="post" onSubmit={(e)=> { enviar_matricula(e) }} > 
+    <div>
+        <label htmlFor="nome">Nome:</label>
+        <input type="text" id='nome_aluno_matricula' placeholder="Renato" disabled onChange={(e)=> {preparaPost('nome',e.target.value)}} required />
+    </div>
+
+
+        <input type="hidden" id='codigo_aluno_matricula'   required/>
+
+
+        <div>
+                        <label htmlFor="disci">Matricule o aluno na disciplina</label>
+                        <select name="disci" id="disci" required >
+                            <option value=""></option>
+                            {
+                                disciplinas.map((item)=>(
+                                    <option value={item.codigo} >{item.nome_disciplina}</option>
+                                ))
+                            }
+
+                        </select>
         </div>
+
+    <div className="btns">
+        <div>
+            <button id="cadastrar"  type="submit">Cadastrar</button>
+        </div>
+   </div>
+
+</form>
+
+</div>
+        
+    </div>
+
+    </div>
     )
 }

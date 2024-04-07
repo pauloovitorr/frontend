@@ -223,7 +223,9 @@ async atualizaDisciplina(dados) {
 
 
 // Aluno 
-async cadastrarAluno(dados) {
+async cadastrarAluno(dadoss) {
+
+    console.log('dados: ' + dadoss)
 
     try{
       let apiDisciplina = 'http://localhost:4000/aluno'
@@ -233,7 +235,7 @@ async cadastrarAluno(dados) {
           headers:{
               'Content-type': 'Application/json'
           },
-          body: JSON.stringify(dados)
+          body: JSON.stringify(dadoss)
       })
 
       if(!resposta.ok){
@@ -246,6 +248,34 @@ async cadastrarAluno(dados) {
   }
   catch(erro){
       return "Erro o cadastrar aluno: "  + erro
+  }
+
+}
+
+
+async buscarAluno(dados) {
+
+    try{
+      let apiProfessor = 'http://localhost:4000/aluno'
+
+      let resposta = await fetch(`${apiProfessor}/${dados}`, {
+        method: 'GET',
+        headers:{
+            'Content-type': 'Application/json'
+        }
+      })
+
+      if(!resposta.ok){
+          throw new Error('Resposta da rede não está ok');
+      }
+      else{
+          let lista_professor = await resposta.json()
+          return lista_professor
+      }
+      
+  }
+  catch(erro){
+      return "Erro o cadastrar professor: "  + erro
   }
 
 }
