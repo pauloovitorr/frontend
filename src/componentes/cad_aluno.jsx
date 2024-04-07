@@ -60,7 +60,7 @@ export default function Aluno(){
         document.getElementById('codigo_aluno_matricula').value = cod
     }
 
-    function enviar_matricula(e){
+  async function enviar_matricula(e){
         e.preventDefault()
 
         let codigoAluno =  document.getElementById('codigo_aluno_matricula').value
@@ -68,12 +68,14 @@ export default function Aluno(){
 
         let vincular = {
             codigo_aluno: codigoAluno,
-            lista_disciplina: codigodisciplina
+            disciplinas: codigodisciplina
         }
 
-        console.log(vincular)
-
-
+            let api = new Requisicoes()
+        
+            let buscarDisciplina = await api.matricularAluno(vincular)
+    
+            alert(buscarDisciplina)
     }
 
 

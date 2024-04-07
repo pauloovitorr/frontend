@@ -225,7 +225,6 @@ async atualizaDisciplina(dados) {
 // Aluno 
 async cadastrarAluno(dadoss) {
 
-    console.log('dados: ' + dadoss)
 
     try{
       let apiDisciplina = 'http://localhost:4000/aluno'
@@ -279,5 +278,36 @@ async buscarAluno(dados) {
   }
 
 }
+
+
+//vincular
+
+async matricularAluno(dadoss) {
+
+    try{
+      let apiDisciplina = 'http://localhost:4000/vincular'
+
+      let resposta = await fetch(`${apiDisciplina}`, {
+          method: 'POST',
+          headers:{
+              'Content-type': 'Application/json'
+          },
+          body: JSON.stringify(dadoss)
+      })
+
+      if(!resposta.ok){
+          throw new Error('Resposta da rede não está ok');
+      }
+      else{
+          return 'Aluno matriculado com sucesso !'
+      }
+      
+  }
+  catch(erro){
+      return "Erro o cadastrar aluno: "  + erro
+  }
+
+}
+
 
 }
