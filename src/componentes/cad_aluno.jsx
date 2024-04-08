@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 export default function Aluno(){
 
     const[Alunos,setAlunos] = useState([])
+    const[Alunosmatriculados,setAlunosmatriculados] = useState([])
     const[disciplinas,setDisciplinas] = useState([])
     
     const[dados, setDados] = useState({
@@ -51,7 +52,8 @@ export default function Aluno(){
     useEffect(()=>{
         buscarAluno()
         buscarDisciplina()
-       
+        buscarAlunoMatriculado()
+        console.log(Alunosmatriculados)
     })
 
 
@@ -87,6 +89,16 @@ export default function Aluno(){
        let msg =  await api.cadastrarAluno(dados)
 
         alert(msg)
+    }
+
+
+    // Buscar aluno matriculado
+    async function buscarAlunoMatriculado(dados){
+        let api = new Requisicoes()
+
+        let alunos_matriculados = await api.buscarAluno_matriculado(dados)
+
+        setAlunosmatriculados(alunos_matriculados.listaa)
     }
 
    
@@ -149,7 +161,6 @@ export default function Aluno(){
                             <td style={{ cursor: 'pointer' }} onClick={() => { matricula(aluno.codigo, aluno.nome) }}><i className="fa-solid fa-user"></i></td>
                             <td style={{ cursor: 'pointer' }} onClick={() => { matricula(aluno.codigo,aluno.nome ) }}>Matricular</td>
 
-                            
                         </tr>
                     ))
                 }
@@ -200,8 +211,48 @@ export default function Aluno(){
 </form>
 
 </div>
-        
-    </div>
+     
+</div>
+
+
+<div className="tabela">
+
+<h2>Lista de alunos</h2>
+<table class="table" id="tabela">
+<thead>
+    <tr>
+    <th scope="col">Código</th>
+    <th scope="col">Aluno</th>
+    <th scope="col">CPF</th>
+    <th scope="col">Disciplina</th>
+    <th scope="col">Professor</th>
+    </tr>
+</thead>
+<tbody>
+
+{
+    Alunosmatriculados.map((aluno)=>(
+        <tr>
+            <td>{aluno.codigo}</td>
+            <td>{aluno.nome}</td>
+            <td>{aluno.cpf}</td>
+            {
+                aluno.lista_disciplina.map((dis)=>(
+                    <>
+                    <td>{dis.nome_disciplina}</td>
+                    <td>{dis.professor.nome}</td>
+                    
+                    </>
+                ))
+            }                  
+        </tr>
+    ))
+}
+
+   
+</tbody>
+</table>
+</div>
 
     </div>
     )

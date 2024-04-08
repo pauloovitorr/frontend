@@ -310,4 +310,32 @@ async matricularAluno(dadoss) {
 }
 
 
+async buscarAluno_matriculado(dados) {
+
+    try{
+      let apiProfessor = 'http://localhost:4000/vincular'
+
+      let resposta = await fetch(`${apiProfessor}/${dados}`, {
+        method: 'GET',
+        headers:{
+            'Content-type': 'Application/json'
+        }
+      })
+
+      if(!resposta.ok){
+          throw new Error('Resposta da rede não está ok');
+      }
+      else{
+          let lista_professor = await resposta.json()
+          return lista_professor
+      }
+      
+  }
+  catch(erro){
+      return "Erro o cadastrar professor: "  + erro
+  }
+
+}
+
+
 }
